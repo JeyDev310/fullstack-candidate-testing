@@ -2,6 +2,7 @@ import jobs from '../../data/jobs'
 
 export default async (req, res) => {
   const query = JSON.parse(req.body);
+
   res.statusCode = 200
   // @todo: implement filters and search
   // @todo: implement automated tests
@@ -13,7 +14,7 @@ export default async (req, res) => {
 
   const searched = jobs.filter(job => {
     if (query.q) {
-      return job.name.toLowerCase.includes(query.q.toLowerCase())
+      return job.name.toLowerCase().includes(query.q.toLowerCase())
     }
     return true;
   })
