@@ -4,7 +4,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Content from '../components/Content'
 
-const IndexPage = ({ filters }) => {
+const IndexPage = () => {
   return (
     <div className="w-full flex flex-col bg-gray-100">
       <Head>

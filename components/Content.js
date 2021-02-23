@@ -76,16 +76,20 @@ const Content = () => {
   }
 
   const fetchFilters = async () => {
-    const getFilters = await fetch('http://localhost:3000/api/filters')
+    const apiBaseURL = window.location.href;
+
+    const getFilters = await fetch(apiBaseURL+'api/filters')
     const filtersData = await getFilters.json()
     setFilters(filtersData)
   }
   const fetchJobs = async () => {
+    const apiBaseURL = window.location.href;
+
     const data = {
       q: searchKey,
       sorts: sortItems.filter(item => item.way != '')
     }
-    const getJobs = await fetch('http://localhost:3000/api/jobs',
+    const getJobs = await fetch(apiBaseURL+'api/jobs',
     {
       method: 'POST',
       body: JSON.stringify(data)
