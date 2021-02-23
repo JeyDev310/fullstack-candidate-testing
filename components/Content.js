@@ -2,8 +2,9 @@ import React from 'react'
 import * as moment from 'moment'
 import { debounce } from "lodash";
 
-const Content = ({filters}) => {
-  const [jobs, setJobs] = React.useState([]); 
+const Content = () => {
+  const [filters, setFilters] = React.useState([]);
+  const [jobs, setJobs] = React.useState([]);
   const [searchKey, setSearchKey] = React.useState(''); 
   const [selectedJob, selectJob] = React.useState(null);
   const [selectedJobItem, selecteJobItem] = React.useState(null);
@@ -22,6 +23,10 @@ const Content = ({filters}) => {
     {title: "Experience", key: 'experience', way: ''},
 
   ])
+
+  React.useEffect(() => {
+    fetchFilters()
+  }, []);
 
   React.useEffect(() => {
     fetchJobs()
@@ -70,6 +75,11 @@ const Content = ({filters}) => {
     return ary.slice(0, Math.min(ary.length, 10))
   }
 
+  const fetchFilters = async () => {
+    const getFilters = await fetch('http://localhost:3000/api/filters')
+    const filtersData = await getFilters.json()
+    setFilters(filtersData)
+  }
   const fetchJobs = async () => {
     const data = {
       q: searchKey,
@@ -139,7 +149,7 @@ const Content = ({filters}) => {
       <div className="flex mt-2">
         <div className="w-72 flex-grow-0 flex-shrink-0 hidden md:flex flex-col mr-4">
           {
-            filterItems.map((item, index) => {
+            filters && filterItems && filterItems.map((item, index) => {
               return (
                 <div className="p-4 mb-4 bg-white shadow rounded" key={'filter'+index}>
                   <div className="text-base font-bold mb-2 uppercase">
@@ -156,7 +166,7 @@ const Content = ({filters}) => {
                     })
                   }
                   {
-                    filters[item.key].length > 10 && (
+                    filters[item.key] && filters[item.key].length > 10 && (
                       <div className="text-sm text-blue-400 cursor-pointer" onClick={()=>onClickFilterShowMore(index)}>
                         {item.showMore ? 'Show More':'Less More'}
                       </div>
